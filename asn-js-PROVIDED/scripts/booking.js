@@ -22,19 +22,23 @@ var daysArray = [monday, tuesday, wednesday, thursday, friday];
 // when the day buttons are clicked, we will apply the "clicked" class to that element, and update any other relevant variables. Then, we can recalculate the total cost.
 // added challenge: don't update the dayCounter if the same day is clicked more than once. hint: .classList.contains() might be helpful here!
 
-for (let i = 0; i < daysArray.length; i++) {
-  daysArray[i].addEventListener("click", function () {
-    if (!this.classList.contains("clicked")) {
-      this.classList.add("clicked");
+function createDayClickListener(day) {
+  return function () {
+    if (!day.classList.contains("clicked")) {
+      day.classList.add("clicked");
       numDays += 1;
-    } else if (this.classList.contains("clicked")) {
-      this.classList.remove("clicked");
+    } else {
+      day.classList.remove("clicked");
       numDays -= 1;
     }
     recalculate();
-  });
+  };
 }
 
+for (let i = 0; i < daysArray.length; i++) {
+  let currentDay = daysArray[i];
+  currentDay.addEventListener("click", createDayClickListener(currentDay));
+}
 /********* clear days *********/
 // when the clear-button is clicked, the "clicked" class is removed from all days, any other relevant variables are reset, and the calculated cost is set to 0.
 
